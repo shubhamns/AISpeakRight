@@ -324,9 +324,33 @@ textarea:focus {
 .auth-page {
   min-height: calc(100vh - 2rem);
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 1rem 0;
+  gap: 1.5rem;
+  padding: 1.5rem 1rem 2rem;
+}
+.auth-page__header {
+  text-align: center;
+  max-width: 26rem;
+}
+.auth-page__title {
+  margin: 0 0 0.6rem;
+  font-family: Outfit, sans-serif;
+  font-size: clamp(1.45rem, 4vw, 1.85rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+  background: linear-gradient(120deg, #fff 0%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.auth-page__desc {
+  margin: 0;
+  font-size: 0.94rem;
+  line-height: 1.55;
+  color: var(--text-muted);
 }
 .glass-panel {
   width: 100%;

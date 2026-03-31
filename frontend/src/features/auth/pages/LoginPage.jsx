@@ -25,9 +25,15 @@ export default function LoginPage() {
   }
   return (
     <div className="auth-page">
+      <div className="auth-page__header">
+        <h1 className="auth-page__title">Smart English Coach</h1>
+        <p className="auth-page__desc">
+          Learn English grammar by level, take short exams, and fix sentences with instant feedback—all in one place.
+        </p>
+      </div>
       <div className="glass-panel auth-panel">
         <h2>Sign in</h2>
-        <p className="auth-sub">Smart English Coach</p>
+        <p className="auth-sub">Use your email and password to continue.</p>
         <form onSubmit={onSubmit} className="auth-form">
           <label className="field">
             <span>Email</span>
