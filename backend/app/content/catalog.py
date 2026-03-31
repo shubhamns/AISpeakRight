@@ -1,4 +1,5 @@
 import copy
+from app.core.config import settings
 
 LEVELS = [
     {"id": "beginner", "name": "Beginner"},
@@ -32,19 +33,20 @@ def _build(tid: str, sn: int, rows: list):
     return out
 
 def _alt_sn(tid: str, sn: int, rows0: list, rows1: list):
-    return _build(tid, sn, rows1 if sn == 1 else rows0)
+    return _build(tid, sn, (rows0, rows1)[sn % 2])
 
 def _set_have_has(tid: str, sn: int):
     p = ["a pen", "two cats", "a new job", "many friends", "no money", "a cold", "a red bag", "an old car", "a big house", "a small dog", "three keys", "a good idea", "a question", "a ticket", "a laptop"]
     sg = ["He", "She", "It", "My dad", "Anna", "The shop", "Tom", "This phone", "Maria", "The team"]
     pl = ["I", "We", "They", "You", "The boys", "My parents", "Those kids", "My friends", "These people", "The students"]
+    lp = len(p)
     qs = []
     qi = 0
     for i in range(5):
-        qs.append(_fb(tid, sn, qi, f"{pl[i]} ___ {p[i + sn]}.", "have"))
+        qs.append(_fb(tid, sn, qi, f"{pl[i]} ___ {p[(i + sn) % lp]}.", "have"))
         qi += 1
     for i in range(5):
-        qs.append(_fb(tid, sn, qi, f"{sg[i]} ___ {p[i + 5 + sn]}.", "has"))
+        qs.append(_fb(tid, sn, qi, f"{sg[i]} ___ {p[(i + 5 + sn) % lp]}.", "has"))
         qi += 1
     qs.append(_mcq(tid, sn, qi, "We ___ time to talk.", "have", ["have", "has", "is"]))
     qi += 1
@@ -56,20 +58,21 @@ def _set_have_has(tid: str, sn: int):
     qi += 1
     qs.append(_mcq(tid, sn, qi, "Choose the best line.", "My sister has a dog.", ["My sister have a dog.", "My sister has a dog.", "My sister having a dog."]))
     qi += 1
-    qs.append(_fb(tid, sn, qi, f"{'You' if sn == 0 else 'They'} ___ a nice room.", "have"))
+    qs.append(_fb(tid, sn, qi, f"{'You' if sn % 2 == 0 else 'They'} ___ a nice room.", "have"))
     return qs
 
 def _set_do_does(tid: str, sn: int):
     qs = []
     qi = 0
     acts = ["homework", "the dishes", "yoga", "your best", "a break", "the cleaning", "exercise", "the shopping", "a favor", "work", "the report", "the talking", "the planning", "the driving", "the cooking"]
+    la = len(acts)
     sg = ["He", "She", "It", "My boss", "Sam", "The cat", "Lisa", "This app"]
     pl = ["I", "We", "They", "You", "The workers", "My cousins", "Those drivers", "The chefs"]
     for i in range(6):
-        qs.append(_fb(tid, sn, qi, f"{pl[i % len(pl)]} ___ {acts[i + sn]}.", "do"))
+        qs.append(_fb(tid, sn, qi, f"{pl[i % len(pl)]} ___ {acts[(i + sn) % la]}.", "do"))
         qi += 1
     for i in range(4):
-        qs.append(_fb(tid, sn, qi, f"{sg[i]} ___ {acts[i + 6 + sn]}?", "does"))
+        qs.append(_fb(tid, sn, qi, f"{sg[i]} ___ {acts[(i + 6 + sn) % la]}?", "does"))
         qi += 1
     qs.append(_mcq(tid, sn, qi, "___ she play tennis?", "Does", ["Do", "Does", "Is"]))
     qi += 1
@@ -81,7 +84,7 @@ def _set_do_does(tid: str, sn: int):
     qi += 1
     qs.append(_mcq(tid, sn, qi, "Pick the right question.", "Does it rain often?", ["Do it rains often?", "Does it rain often?", "Is it rain often?"]))
     qi += 1
-    qs.append(_fb(tid, sn, qi, f"{'They' if sn == 0 else 'We'} ___ not want sugar.", "do"))
+    qs.append(_fb(tid, sn, qi, f"{'They' if sn % 2 == 0 else 'We'} ___ not want sugar.", "do"))
     return qs
 
 def _set_have_vs_do(tid: str, sn: int):
@@ -113,7 +116,7 @@ def _set_have_vs_do(tid: str, sn: int):
         ("You ___ a great time.", "have", ["do", "have", "make"]),
         ("___ she ___ a pet?", "Does", ["Does", "Have", "Is"]),
     ]
-    pairs = pairs1 if sn == 1 else pairs0
+    pairs = (pairs0, pairs1)[sn % 2]
     qs = []
     qi = 0
     for i, (pr, ok, opts) in enumerate(pairs[:12]):
@@ -126,7 +129,7 @@ def _set_have_vs_do(tid: str, sn: int):
     qi += 1
     qs.append(_cor(tid, sn, qi, "I have my homework.", "I do my homework.", "I make my homework."))
     qi += 1
-    if sn == 0:
+    if sn % 2 == 0:
         qs.append(_fb(tid, sn, qi, "They ___ breakfast together.", "have"))
         qi += 1
         qs.append(_fb(tid, sn, qi, "He ___ not have a bike.", "does"))
@@ -176,9 +179,9 @@ def _set_present_simple(tid: str, sn: int):
     qs = []
     qi = 0
     a, b = verbs[sn % 15], verbs[(sn + 7) % 15]
-    qs.append(_fb(tid, sn, qi, f"{'I' if sn == 0 else 'They'} ___ to work by bus.", a[0])); qi += 1
-    qs.append(_fb(tid, sn, qi, f"{'She' if sn == 0 else 'He'} ___ math after school.", b[1])); qi += 1
-    if sn == 0:
+    qs.append(_fb(tid, sn, qi, f"{'I' if sn % 2 == 0 else 'They'} ___ to work by bus.", a[0])); qi += 1
+    qs.append(_fb(tid, sn, qi, f"{'She' if sn % 2 == 0 else 'He'} ___ math after school.", b[1])); qi += 1
+    if sn % 2 == 0:
         qs.append(_mcq(tid, sn, qi, "They ___ football on Sundays.", "play", ["plays", "play", "playing"])); qi += 1
         qs.append(_mcq(tid, sn, qi, "He ___ TV in the evening.", "watches", ["watch", "watches", "watching"])); qi += 1
         qs.append(_fb(tid, sn, qi, "We ___ dinner at 7.", "eat")); qi += 1
@@ -253,7 +256,7 @@ def _set_plurals(tid: str, sn: int):
         ("many ___", "students"), ("two ___", "phones"), ("Pick right: There ___ two dogs.", "are"),
         ("Pick right: There ___ a dog.", "is"), ("These ___ my friends.", "are"), ("This ___ my friend.", "is"),
     ]
-    if sn == 1:
+    if sn % 2 == 1:
         data = [
             ("one city / two ___", "cities"), ("one baby / two ___", "babies"), ("one knife / many ___", "knives"),
             ("one foot / two ___", "feet"), ("one man / two ___", "men"), ("one woman / two ___", "women"),
@@ -280,7 +283,7 @@ def _set_articles(tid: str, sn: int):
         ("___ sun is bright.", "The"), ("___ water is cold.", "The"), ("___ cats are cute.", "The"),
         ("I need ___ pen.", "a"), ("She is ___ teacher.", "a"), ("It is ___ useful tool.", "a"), ("___ moon tonight", "The"),
     ]
-    if sn == 1:
+    if sn % 2 == 1:
         rows = [
             ("___ orange", "an"), ("___ one-way street", "a"), ("___ ice cream", "an"), ("___ big idea", "a"),
             ("___ old man", "an"), ("___ young boy", "a"), ("___ elephant", "an"), ("___ car", "a"),
@@ -628,7 +631,7 @@ def _set_prep_place(tid: str, sn: int):
         ("I study ___ my room.", "in"), ("Call me ___ noon.", "at"), ("The sign is ___ the window.", "on"),
         ("We eat ___ a restaurant.", "at"), ("The shoes are ___ the bed.", "under"), ("The bird is ___ the tree.", "in"),
     ]
-    for pr, ans in (r0 if sn == 0 else r1):
+    for pr, ans in (r0, r1)[sn % 2]:
         opts = [ans, "on" if ans != "on" else "in", "at" if ans != "at" else "in"]
         if ans == "under":
             opts = ["under", "on", "at"]
@@ -636,8 +639,9 @@ def _set_prep_place(tid: str, sn: int):
         qi += 1
     return qs
 
-def _dup_sets(builder, tid: str, n: int = 2):
-    return [copy.deepcopy(builder(tid, sn)) for sn in range(n)]
+def _dup_sets(builder, tid: str, n: int | None = None):
+    cnt = settings.question_sets_per_topic if n is None else n
+    return [copy.deepcopy(builder(tid, sn)) for sn in range(cnt)]
 
 TOPICS_RAW = [
     {"id": "beg_have_has", "level_id": "beginner", "title": "Have / Has", "explanation": "Use 'have' with I, you, we, they. Use 'has' with he, she, it. Both talk about things you own, relationships, or states like having time or a cold.", "examples": ["I have a laptop.", "She has a cat.", "We have a meeting at 10.", "He has a headache today.", "They have two cars."], "question_sets": _dup_sets(_set_have_has, "beg_have_has")},

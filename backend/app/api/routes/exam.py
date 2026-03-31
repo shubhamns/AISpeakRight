@@ -1,3 +1,4 @@
+import random
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 from app.api.deps import get_current_user, get_db
@@ -36,7 +37,8 @@ def get_questions(
     else:
         prog = get_or_create_progress(db, uid, topic_id)
         si = min(prog.next_set_index, n - 1)
-    qs = sets[si]
+    qs = list(sets[si])
+    random.shuffle(qs)
     return ExamQuestionsResponse(
         topic_id=topic_id,
         set_index=si,

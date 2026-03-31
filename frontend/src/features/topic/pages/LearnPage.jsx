@@ -14,7 +14,7 @@ export default function LearnPage() {
   if (err) return <p className="err">{err}</p>;
   if (!t) return <p>Loading…</p>;
   return (
-    <>
+    <div className="page-sticky-foot">
       <Link className="back" to={`/topic/${topicId}`}>
         ← Topic
       </Link>
@@ -25,11 +25,13 @@ export default function LearnPage() {
           {ex}
         </div>
       ))}
-      <div className="btn-row">
-        <Link className="btn" to={`/topic/${topicId}/exam`}>
-          Start Exam
-        </Link>
+      <div className="sticky-bottom-bar" role="region" aria-label="Start exam">
+        <div className="sticky-bottom-bar__inner">
+          <Link className="btn" to={`/topic/${topicId}/exam`}>
+            Start Exam
+          </Link>
+        </div>
       </div>
-    </>
+    </div>
   );
 }

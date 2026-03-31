@@ -19,18 +19,13 @@ export default function PracticePage() {
       .finally(() => setLoading(false));
   };
   return (
-    <>
+    <div className="page-sticky-foot">
       <Link className="back" to="/">
         ← Home
       </Link>
       <h2>Free practice</h2>
       <p className="lead">Type any sentence. We correct it and explain in simple words.</p>
       <textarea value={text} onChange={(e) => setText(e.target.value)} placeholder="e.g. I do a car" />
-      <div className="btn-row">
-        <button type="button" className="btn" disabled={loading} onClick={go}>
-          {loading ? "…" : "Check"}
-        </button>
-      </div>
       {err && <p className="err">{err}</p>}
       {out && (
         <div className="result-box pass" style={{ marginTop: "1rem" }}>
@@ -42,6 +37,13 @@ export default function PracticePage() {
           </p>
         </div>
       )}
-    </>
+      <div className="sticky-bottom-bar" role="region" aria-label="Check sentence">
+        <div className="sticky-bottom-bar__inner">
+          <button type="button" className="btn" disabled={loading} onClick={go}>
+            {loading ? "…" : "Check"}
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }

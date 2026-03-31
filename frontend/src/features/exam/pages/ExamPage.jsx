@@ -127,7 +127,7 @@ export default function ExamPage() {
     );
   }
   return (
-    <>
+    <div className="page-sticky-foot">
       <Link className="back" to={`/topic/${topicId}`}>
         ← Topic
       </Link>
@@ -162,11 +162,13 @@ export default function ExamPage() {
           )}
         </div>
       ))}
-      <div className="btn-row">
-        <button type="button" className="btn" onClick={onSubmit}>
-          Submit
-        </button>
+      <div className="sticky-bottom-bar" role="region" aria-label="Submit exam">
+        <div className="sticky-bottom-bar__inner">
+          <button type="button" className="btn" onClick={onSubmit}>
+            Submit
+          </button>
+        </div>
       </div>
-    </>
+    </div>
   );
 }
